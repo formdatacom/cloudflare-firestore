@@ -12,6 +12,12 @@ of kilobytes without any app logic](https://github.com/samuelgozi/firebase-fires
 
 [Our Alternative SDK performs in average 13 times better and is 27 times smaller than the official ones](https://github.com/samuelgozi/firebase-firestore-lite/wiki/Firebase-Alternative-SDK-Benchmarks).
 
+## Calling Firestore from Cloudflare workers
+Currently all of Google's SDKs, including [javascript version 8](https://firebase.google.com/docs/firestore/quickstart#web-version-8), [javascript version 9](https://firebase.google.com/docs/firestore/quickstart#web-version-9), [firebase-admin](https://firebase.google.com/docs/firestore/quickstart#node.js) and [google-cloud/firestore](https://cloud.google.com/nodejs/docs/reference/firestore/latest#installing-the-client-library), do not work in Cloudflare's workers environment due to dependency on certain Node libraries that do not exist in this environemnt. 
+This package can be used in Cloudflare Workers to access Firestore database.
+
+See below how to authenticate from workers environment.
+
 ## What am I giving up by using this?
 
 No realtime support (yet*) and no out of the box offline support*. You should also transpile and polyfill the code yourself for your target browsers. I don't try to support old browsers (ehm... IE), but it is possible and was done by some of the community.
@@ -68,6 +74,31 @@ const db = new Database({ projectId: 'sandbox', auth });
 ```
 
 The firestore instance will now make all the requests with the authenticates user's credentials.
+
+### Authenticating from Cloudflare's workers
+You can create your own authorization provider that will use a service-user credentials to authenticate. 
+To do that, pass an `auth` object to the DB constructor:
+The code below assumes that you have a KV store mapped to `PROPERTIES` in your `wrangler.toml` file,
+that contains a key called `GOOGLE_FIRESTORE_ACCESS_TOKEN` with an access token.
+Checkout [this gist](https://gist.github.com/danbars/d39bad619db29669cebccf464d9e66e5) for an example how to create such a token.
+
+```javascript
+/* global PROPERTIES */
+const auth = {
+  /**
+  * Uses native fetch, but adds authorization headers, otherwise, the API is exactly the same as native fetch.
+  * @param {Request|Object|string} resource A request to send. It can be a resource or an options object.
+  * @param {Object} init An options object.
+  */
+  authorizedRequest: async (resource, init) => {
+    const request = resource instanceof Request ? resource : new Request(resource, init);
+    const token = await PROPERTIES.get('GOOGLE_FIRESTORE_ACCESS_TOKEN', {cacheTtl: 600})
+    request.headers.set('Authorization', `Bearer ${token}`);
+    return fetch(request);
+  }
+}
+const db = new Database({ projectId: 'sandbox', auth });
+```
 
 ## Working with references
 
