@@ -328,8 +328,8 @@ It will commit and retry the function for you if the transaction fails because t
 Here is how you can use it:
 
 ```js
-function updateFunction(tx) {
-	const [doc1, doc2, doc3] = tx.get([ ... ]);
+async function updateFunction(tx) {
+	const [doc1, doc2, doc3] = await tx.get([ ... ]);
 
 	// Manipulate the data.
 	doc1.title = 'new title';
