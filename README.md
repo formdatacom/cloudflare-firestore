@@ -1,5 +1,6 @@
+> This is a fork of `samuelgozi/firebase-firestore-lite` that will be maintained for simple use cases of firestire in Cloudflare workers environment
+
 <p align="center">
-<img src="https://raw.githubusercontent.com/samuelgozi/firebase-firestore-lite/master/logo.png" alt="logo" width="400"/>
 
 [![codecov](https://codecov.io/gh/samuelgozi/firebase-firestore-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/samuelgozi/firebase-firestore-lite) ![bundlephobia](https://badgen.net/bundlephobia/minzip/firebase-auth-lite)
 
