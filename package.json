@@ -1,6 +1,6 @@
 {
 	"name": "@formdata/cloudflare-firestore",
-	"version": "1.0.14",
+	"version": "1.0.15",
 	"description": "A lightweight cloud firestore library for cloudflare workers",
 	"main": "dist/mod.js",
 	"types": "dist/mod.d.ts",
@@ -20,7 +20,7 @@
 		"lint": "eslint . --ext .ts",
 		"test": "jest",
 		"doc": "typedoc",
-		"publish": "node scripts/publish-with-token.js"
+		"publish": "npm run build & node scripts/publish-with-token.js"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.10.0",

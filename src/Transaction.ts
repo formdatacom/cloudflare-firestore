@@ -121,7 +121,6 @@ export class Transaction {
 	 */
 	async commit() {
 		this.preconditions = {};
-		console.log('commit to DB', JSON.stringify(this.writes));
 		return void (await this.db.fetch(this.db.endpoint + ':commit', {
 			method: 'POST',
 			body: JSON.stringify({ writes: this.writes })

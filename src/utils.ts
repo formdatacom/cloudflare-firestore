@@ -124,11 +124,6 @@ export function objectToQuery(obj: any = {}, parentProp?: string): string {
 	return (!parentProp && params.length ? '?' : '') + params.join('&');
 }
 
-function test() {
-	console.log(getKeyPaths({workspaceAddons: {'5PiPtxBPRTGF7UDZgmMZ': {powerUp: true}}}))
-}
-
-test()
 /**
  * Returns an array of keyPaths of an object but skips over array's values
  * @private
