@@ -95,3 +95,4 @@ dist
 
 # mac stuff
 .DS_Store
+/.dev.vars

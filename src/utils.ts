@@ -103,7 +103,7 @@ export function objectToQuery(obj: any = {}, parentProp?: string): string {
 
 	for (const prop in obj) {
 		if (obj[prop] === undefined) continue; // Skip over undefined props.
-		const propPath = parentProp ? `${parentProp}.${prop}` : prop;
+		const propPath = parentProp ? `${parentProp}.\`${prop}\`` : `\`${prop}\``;
 
 		// If it is an array then we should encode each value independently, and then join.
 		if (Array.isArray(obj[prop])) {
@@ -124,6 +124,11 @@ export function objectToQuery(obj: any = {}, parentProp?: string): string {
 	return (!parentProp && params.length ? '?' : '') + params.join('&');
 }
 
+function test() {
+	console.log(getKeyPaths({workspaceAddons: {'5PiPtxBPRTGF7UDZgmMZ': {powerUp: true}}}))
+}
+
+test()
 /**
  * Returns an array of keyPaths of an object but skips over array's values
  * @private
@@ -134,7 +139,7 @@ export function getKeyPaths(object: any, parentPath?: string): string[] {
 	for (const key in object) {
 		if (object[key] instanceof Transform) continue;
 
-		const keyPath = parentPath ? `${parentPath}.${key}` : key;
+		const keyPath = parentPath ? `${parentPath}.\`${key}\`` : `\`${key}\``;
 
 		// Only check child props if the value is an object,
 		// but not null or arrays.
@@ -309,7 +314,7 @@ export function encode(
 	for (const key of keys) {
 		if (object[key] === undefined) continue;
 		const value = object[key];
-		const path = parentPath ? `${parentPath}.${key}` : key;
+		const path = parentPath ? `${parentPath}.\`${key}\`` : `\`${key}\``;
 
 		// If this is a transform then add it to the transforms
 		// list and skip its parsing. but only if a transforms array
